@@ -13,22 +13,12 @@ import scala.Tuple2;
 import scala.reflect.ClassManifestFactory;
 import scala.reflect.ClassTag;
 
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Created by liying on 2018/11/5.
  */
 public class LanguageGraph {
-    class Language{
-        public String language;
-        public int count;
-
-        public Language(String language, int count) {
-            this.language = language;
-            this.count = count;
-        }
-    }
 
     private static final ClassTag<Integer> tagInteger = ClassManifestFactory.classType( Integer.class );
     private static final ClassTag<String> tagString = ClassManifestFactory.classType( String.class );
@@ -36,6 +26,26 @@ public class LanguageGraph {
     private static final ClassTag<Double> tagDouble = ClassManifestFactory.classType( Double.class );
     private static final ClassTag<Tuple2<Object, Double>> tagTuple2 = ClassManifestFactory.classType( Tuple2.class );
     private static final ClassTag<Tuple2<Boolean, Double>> tagTuple2Boolean = ClassManifestFactory.classType( Tuple2.class );
+
+    public void applyGraph(JavaPairRDD<String, Integer> pairs,Map<String, Item> languageMap){
+
+        //生成edges
+        JavaRDD<Edge<Double>> edges=pairs.map(new Function<Tuple2<String, Integer>, Edge<Double>>() {
+            @Override
+            public Edge<Double> call(Tuple2<String, Integer> stringIntegerTuple2) throws Exception {
+                String[] split=stringIntegerTuple2._1().split(",");
+                return new Edge<Double>(Long.parseLong(split[0]), Long.parseLong(split[1]), (double) stringIntegerTuple2._2());
+            }
+        });
+
+        //生成vertex
+//        List<Tuple2<Object, Item>> vertexList = languageMap.keySet().stream().map(key -> new Tuple2<Object, Item>(languageMap.get(key), new Item(key, "language"))).collect(Collectors.toList());
+//        JavaRDD<Tuple2<Object, Item>> vertices = sc.parallelize(vertexList);
+
+
+
+    }
+
     public static void main(String[] args) {
         SparkConf conf = new SparkConf().setAppName("Graph short path").setMaster("local");
         JavaSparkContext ctx = new JavaSparkContext(conf);
@@ -63,21 +73,6 @@ public class LanguageGraph {
                 return new Tuple2<String, Integer>(word, 1);
             }
         });
-
-
-        class GetNum implements Function<String, Integer> {
-            @Override
-            public Integer call(String s) {
-                return 1; }
-        }
-        class Sum implements Function2<Integer, Integer, Integer> {
-            @Override
-            public Integer call(Integer a, Integer b) { return a + b; }
-        }
-
-
-        JavaRDD<Integer> lineLengths = lines.map(new GetNum());
-        int totalLength = lineLengths.reduce(new Sum());
 
 
         JavaRDD<Tuple2<Object, String>> vertices = ctx.parallelize(
