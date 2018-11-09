@@ -3,6 +3,7 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
+import org.apache.spark.api.java.function.Function;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.graphx.Edge;
 import org.apache.spark.graphx.Graph;
@@ -59,6 +60,8 @@ public class DegreeCount {
         });
 
         JavaPairRDD<String, Integer> pairs = languageCombinations.mapToPair(s -> new Tuple2(s, 1));
+
+
         //生成vertex
         List<Tuple2<Object, Item>> vertexList = languageMap.keySet().stream().map(key -> new Tuple2<Object, Item>(languageMap.get(key).getId(), languageMap.get(key))).collect(Collectors.toList());
         JavaRDD<Tuple2<Object, Item>> vertices = sc.parallelize(vertexList);
@@ -71,10 +74,11 @@ public class DegreeCount {
             doubleEdges.add(new Edge<>(Long.parseLong(split[1]), Long.parseLong(split[0]), (double) stringIntegerTuple2._2()));
             return doubleEdges.iterator();
         });
+
+
+
         //生成图
         Graph<Item, Double> g2 = Graph.apply(vertices.rdd(), originEdges.rdd(), new Item(0, "other", 0, "other"), StorageLevel.MEMORY_ONLY(), StorageLevel.MEMORY_ONLY(), tagItem, tagDouble);
-
-
         String content = "";
         for (Tuple2<Object, Object> tuple : g2.ops().degrees().toJavaRDD().collect())
         {
@@ -83,6 +87,11 @@ public class DegreeCount {
             content += line;
         }
         FileUtil.writeString("degrees.txt", content);
+
+
+
+
+
     }
 }
 
