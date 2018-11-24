@@ -13,8 +13,9 @@ public class Item implements Serializable {
     public String type;
     public int count;
 
-    public Item(long id,String name, String type) {
-        this.id=id;
+    public Item(long id, String name, int count, String type) {
+        this.id = id;
+        this.count = count;
         this.name = name;
         this.type = type;
     }

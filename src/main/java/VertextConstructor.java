@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class VertextConstructor {
     public static void main(String[] args){
-        String logFile = "data.txt"; // Should be some file on your system
+        String logFile = "raw_graph_data"; // Should be some file on your system
         SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
@@ -33,12 +33,12 @@ public class VertextConstructor {
         }
 
 
-        String content="";
-        for (Tuple2<Object, Item> tuple:c){
-            String line =tuple._1()+","+tuple._2().getName()+","+tuple._2().getCount()+","+tuple._2().getType()+"\n";
-            content+=line;
-        }
-        FileUtil.writeString("nodes.txt",content);
+//        String content="";
+//        for (Tuple2<Object, Item> tuple:c){
+//            String line =tuple._1()+","+tuple._2().getName()+","+tuple._2().getCount()+","+tuple._2().getType()+"\n";
+//            content+=line;
+//        }
+//        FileUtil.writeString("nodes.txt",content);
 
     }
 

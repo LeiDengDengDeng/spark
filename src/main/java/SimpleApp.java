@@ -14,13 +14,17 @@ import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.graphx.Edge;
+import org.apache.spark.graphx.EdgeDirection;
 import org.apache.spark.graphx.Graph;
+import org.apache.spark.graphx.PartitionStrategy;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.storage.StorageLevel;
+import scala.Function1;
 import scala.Tuple2;
 import scala.math.Ordering;
 import scala.reflect.ClassManifestFactory;
 import scala.reflect.ClassTag;
+import scala.runtime.BoxedUnit;
 import scala.tools.cmd.gen.AnyVals;
 
 import java.io.File;
@@ -36,7 +40,7 @@ public class SimpleApp {
     private static volatile Broadcast<Map<String, Item>> ids;
 
     public static void main(String[] args){
-        String logFile = "data.txt"; // Should be some file on your system
+        String logFile = "data1.txt"; // Should be some file on your system
         SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(conf);
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
@@ -51,7 +55,7 @@ public class SimpleApp {
         //生成名称->Item对应Map
         Map<String, Item> languageMap = new HashMap<>();
         for (int i = 0; i < languageList.size(); i++) {
-            languageMap.put(languageList.get(i), new Item((long)i,languageList.get(i),"language"));
+            languageMap.put(languageList.get(i), new Item(i,languageList.get(i),1,"language"));
         }
         // 生成id
 //        JavaPairRDD<String,Long> zipWithIndexRDD = languages.zipWithUniqueId();
@@ -91,6 +95,19 @@ public class SimpleApp {
         JavaPairRDD<String, Integer> pairs = languageCombinations.mapToPair(s -> new Tuple2(s, 1));
         JavaPairRDD<String, Integer> newPairs=pairs.reduceByKey((a, b) -> a + b);
         System.out.println(newPairs.collect());
+        //生成edges
+
+        JavaRDD<Edge<Double>> originEdges=pairs.flatMap((FlatMapFunction<Tuple2<String, Integer>, Edge<Double>>) stringIntegerTuple2 -> {
+            List<Edge<Double>> doubleEdges = new ArrayList<>();
+
+            String[] split=stringIntegerTuple2._1().split(",");
+            doubleEdges.add(new Edge<>(Long.parseLong(split[0]), Long.parseLong(split[1]), (double) stringIntegerTuple2._2()));
+            doubleEdges.add(new Edge<>(Long.parseLong(split[1]), Long.parseLong(split[0]), (double) stringIntegerTuple2._2()));
+            return doubleEdges.iterator();
+        });
+
+
+
 
 
 
@@ -119,29 +136,46 @@ public class SimpleApp {
         //生成vertex
         List<Tuple2<Object, Item>> vertexList = languageMap.keySet().stream().map(key -> new Tuple2<Object, Item>(languageMap.get(key).getId(), languageMap.get(key))).collect(Collectors.toList());
         JavaRDD<Tuple2<Object, Item>> vertices = sc.parallelize(vertexList);
-        Graph<Item, Double> g = Graph.apply(vertices.rdd(), edges.rdd(), new Item(0L,"other","other"), StorageLevel.MEMORY_ONLY(), StorageLevel.MEMORY_ONLY(), tagString, tagDouble);
+
+        //生成图
+        Graph<Item, Double> g = Graph.apply(vertices.rdd(), edges.rdd(), new Item(0,"other",0,"other"), StorageLevel.MEMORY_ONLY(), StorageLevel.MEMORY_ONLY(), tagString, tagDouble);
+
+        Graph<Item, Double> g2 = Graph.apply(vertices.rdd(), originEdges.rdd(), new Item(0,"other",0,"other"), StorageLevel.MEMORY_ONLY(), StorageLevel.MEMORY_ONLY(), tagString, tagDouble);
 
 
-        g.vertices().toJavaRDD().collect().forEach(System.out::print);
-        g.edges().toJavaRDD().collect().forEach(System.out::print);
 
 
-        g.ops().stronglyConnectedComponents(10);
+
+
+
+//        g.vertices().toJavaRDD().collect().forEach(System.out::print);
+//        g.edges().toJavaRDD().collect().forEach(System.out::print);
+//        System.out.println();
+//        System.out.println(g.ops().triangleCount().vertices().toJavaRDD().collect());
+//        System.out.println();
+//        System.out.println(g.ops().pageRank(0.001,0.15).vertices().toJavaRDD().collect());
+//        String content="";
+//        for (Tuple2<Object, Item> tuple:g.vertices().toJavaRDD().collect()){
+//
+//            String line =tuple._1()+","+tuple._2().getName()+","+tuple._2().getCount()+","+tuple._2().getType()+"\n";
+//            content+=line;
+//        }
+//        FileUtil.writeString("nodes.txt",content);
+//
+//        String content2="";
+//        for (Edge<Double> edge: g.edges().toJavaRDD().collect()) {
+//            String line= edge.srcId()+","+edge.dstId()+","+edge.attr().intValue()+"\n";
+//            content2+=line;
+//        }
+//        FileUtil.writeString("links.txt",content2);
+
         String content="";
-        for (Tuple2<Object, Item> tuple:vertices.collect()){
-            String line =tuple._1()+","+tuple._2().getName()+","+tuple._2().getCount()+","+tuple._2().getType()+"\n";
+        for (Tuple2<Object, Object> tuple:g2.ops().degrees().toJavaRDD().collect()){
+
+            String line =tuple._1()+","+tuple._2()+"\n";
             content+=line;
         }
-        FileUtil.writeString("nodes.txt",content);
-
-        String content2="";
-        for (Edge<Double> edge: edges.collect()) {
-            String line= edge.srcId()+","+edge.dstId()+","+edge.attr().intValue()+"\n";
-            content2+=line;
-        }
-        FileUtil.writeString("links.txt",content2);
-
-
+        FileUtil.writeString("degrees.txt",content);
 
 
 

@@ -46,7 +46,7 @@ public class LanguageGraph {
                 .filter(new Function<Tuple2<Object, Item>, Boolean>() {
             @Override
             public Boolean call(Tuple2<Object, Item> objectItemTuple2) throws Exception {
-                return objectItemTuple2._2().getCount()>9000;
+                return objectItemTuple2._2().getCount()>3000;
             }
         });
         //生成边
@@ -54,12 +54,7 @@ public class LanguageGraph {
             String[] splits=s.split(",");
             return new Edge<>(Long.parseLong(splits[0]),Long.parseLong(splits[1]),Double.parseDouble(splits[2]));
         })
-                .filter(new Function<Edge<Double>, Boolean>() {
-            @Override
-            public Boolean call(Edge<Double> doubleEdge) throws Exception {
-                return doubleEdge.attr()>1.9 ;
-            }
-        });
+                .filter((Function<Edge<Double>, Boolean>) doubleEdge -> doubleEdge.attr()>0.90);
 
         Graph<Item, Double> graph = Graph.apply(vertices.rdd(), edges.rdd(), new Item(0,"other",0,"other"), StorageLevel.MEMORY_ONLY(), StorageLevel.MEMORY_ONLY(), tagItem, tagDouble);
 
@@ -86,6 +81,7 @@ public class LanguageGraph {
             String line= edge.srcId()+","+edge.dstId()+","+edge.attr()+"\n";
             content2+=line;
         }
+        graph.ops().pageRank(0.01,0.15).vertices().toJavaRDD().collect().forEach(System.out::print);
 //        graph.ops().stronglyConnectedComponents(5).vertices().toJavaRDD().collect().forEach(System.out::print);
         FileUtil.writeString("links.txt",content2);
 

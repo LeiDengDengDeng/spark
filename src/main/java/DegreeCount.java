@@ -71,7 +71,7 @@ public class DegreeCount {
 
             String[] split = stringIntegerTuple2._1().split(",");
             doubleEdges.add(new Edge<>(Long.parseLong(split[0]), Long.parseLong(split[1]), (double) stringIntegerTuple2._2()));
-            doubleEdges.add(new Edge<>(Long.parseLong(split[1]), Long.parseLong(split[0]), (double) stringIntegerTuple2._2()));
+//            doubleEdges.add(new Edge<>(Long.parseLong(split[1]), Long.parseLong(split[0]), (double) stringIntegerTuple2._2()));
             return doubleEdges.iterator();
         });
 
