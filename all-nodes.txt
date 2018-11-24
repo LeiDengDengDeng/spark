@@ -1,0 +1,93 @@
+13,PostgreSQL,17153,Database
+57,Eclipse,9017,IDE
+28,Torch/PyTorch,733,Language
+58,Go,4074,Language
+45,HTML,36566,Language
+62,Groovy,2531,Language
+64,Erlang,661,Language
+5,RubyMine,858,IDE
+75,Google BigQuery,1127,Database
+56,VBA,2324,Language
+21,MySQL,27663,Database
+76,SQLite,9267,Database
+55,Haskell,1282,Language
+79,IPython / Jupyter,3669,IDE
+22,PHPStorm,4560,IDE
+29,IBM Db2,1272,Database
+4,F#,844,Language
+0,Assembly,3204,Language
+3,Python,19353,Language
+51,.NET Core,13096,Framework
+80,Clojure,775,Language
+87,IntelliJ,13652,IDE
+77,Rust,1211,Language
+92,Hadoop,2348,Framework
+19,Coda,305,IDE
+36,Perl,1960,Language
+74,Node.js,23710,Language
+20,Visual Studio,17671,IDE
+48,Spring,8640,Framework
+83,SQL,31119,Language
+8,RStudio,1377,IDE
+90,Amazon RDS/Aurora,2811,Database
+49,Visual Basic 6,2074,Language
+91,Emacs,1735,Language    ?
+24,Bash/Shell,20870,Language
+32,Delphi/Object Pascal,1114,Language
+35,Google Cloud Storage,2782,Database
+12,Swift,3591,Language
+86,MongoDB,14934,Database
+17,Matlab,2616,Language
+11,C#,19386,Language
+70,Xamarin,3501,Framework
+2,Xcode,4657,IDE
+42,C,9857,Language
+65,VB.NET,3791,Language
+88,Light Table,100,IDE
+68,Cassandra,2049,Database
+14,Ocaml,307,Language
+66,Angular,17903,Framework
+9,TypeScript,11825,Language
+85,Microsoft Azure (Tables-CosmosDB-SQL-etc),4338,Database
+52,R,2951,Language
+59,Visual Studio Code,19988,IDE
+6,Neo4j,1356,Database
+53,Elasticsearch,7752,Database
+26,Cobol,374,Language
+78,JavaScript,38664,Language
+16,Sublime Text,14441,IDE
+30,Objective-C,3113,Language
+38,PHP,15821,Language
+41,Lua,1797,Language
+46,Oracle,5431,Database
+69,Android Studio,9175,IDE
+89,Ruby,5526,Language
+50,Amazon DynamoDB,2984,Database
+82,TensorFlow,3416,Framework
+15,Java,23254,Language
+27,Notepad++,16058,IDE
+23,CSS,35332,Language
+34,C++,10822,Language
+67,PyCharm,6173,IDE
+73,Hack,164,Language
+40,Scala,2716,Language
+18,Redis,9949,Database
+47,MariaDB,6413,Database
+10,SQL Server,20416,Database
+61,Zend,201,IDE
+7,React,13166,Framework
+60,Atom,9510,IDE
+44,Kotlin,2304,Language
+37,Julia,244,Language
+54,CoffeeScript,2057,Language
+63,NetBeans,3739,IDE
+25,Apache HBase,956,Database
+39,Amazon Redshift,1211,Database
+31,TextMate,522,IDE
+43,Django,6350,Framework
+1,Spark,2345,Framework
+81,Komodo,273,IDE
+84,Vim,12662,IDE
+72,Cordova,4102,Framework
+33,Apache Hive,1292,Database
+71,Memcached,2897,Database

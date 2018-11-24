@@ -1,0 +1,51 @@
+13,PostgreSQL,17153,Database
+34,C++,10822,Language
+16,Sublime Text,14441,IDE
+82,TensorFlow,3416,Framework
+66,Angular,17903,Framework
+79,IPython / Jupyter,3669,IDE
+65,VB.NET,3791,Language
+11,C#,19386,Language
+30,Objective-C,3113,Language
+24,Bash/Shell,20870,Language
+57,Eclipse,9017,IDE
+51,.NET Core,13096,Framework
+45,HTML,36566,Language
+74,Node.js,23710,Language
+83,SQL,31119,Language
+89,Ruby,5526,Language
+72,Cordova,4102,Framework
+63,NetBeans,3739,IDE
+70,Xamarin,3501,Framework
+20,Visual Studio,17671,IDE
+12,Swift,3591,Language
+9,TypeScript,11825,Language
+38,PHP,15821,Language
+18,Redis,9949,Database
+78,JavaScript,38664,Language
+10,SQL Server,20416,Database
+43,Django,6350,Framework
+84,Vim,12662,IDE
+21,MySQL,27663,Database
+76,SQLite,9267,Database
+47,MariaDB,6413,Database
+15,Java,23254,Language
+53,Elasticsearch,7752,Database
+22,PHPStorm,4560,IDE
+48,Spring,8640,Framework
+59,Visual Studio Code,19988,IDE
+46,Oracle,5431,Database
+27,Notepad++,16058,IDE
+0,Assembly,3204,Language
+42,C,9857,Language
+23,CSS,35332,Language
+69,Android Studio,9175,IDE
+67,PyCharm,6173,IDE
+3,Python,19353,Language
+7,React,13166,Framework
+86,MongoDB,14934,Database
+58,Go,4074,Language
+60,Atom,9510,IDE
+85,Microsoft Azure (Tables-CosmosDB-SQL-etc),4338,Database
+87,IntelliJ,13652,IDE
+2,Xcode,4657,IDE
